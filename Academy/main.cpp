@@ -169,6 +169,72 @@ public:
 	}
 };
 
+#define GRADUATESTUDENT_TAKE_PARAMETERS const std::string& speciality, const std::string& group, const std::string& the_topic_of_the_diploma, const std::string& tutor
+#define GRADUATESTUDENT_GIVE_PARAMETERS speciality, group, the_topic_of_the_diploma, tutor
+
+class GraduateStudent : public Human
+{
+	std::string speciality;
+	std::string group;
+	std::string the_topic_of_the_diploma; //тема диплома
+	std::string tutor; //куратор диплома
+
+public:
+	const std::string& get_speciality()const
+	{
+		return speciality;
+	}
+	const std::string& get_group()const
+	{
+		return group;
+	}
+	const std::string& get_the_topic_of_the_diploma()const
+	{
+		return the_topic_of_the_diploma;
+	}
+	const std::string& get_tutor()const
+	{
+		return tutor;
+	}
+	void set_speciality(const std::string& speciality)
+	{
+		this->speciality = speciality;
+	}
+	void set_group(const std::string& group)
+	{
+		this->group = group;
+	}
+	void set_the_topic_of_the_diploma(const std::string& the_topic_of_the_diploma)
+	{
+		this->the_topic_of_the_diploma = the_topic_of_the_diploma;
+	}
+	void set_tutor(const std::string& tutor)
+	{
+		this->tutor = tutor;
+	}
+	
+	//Constructors:
+	GraduateStudent(HUMAN_TAKE_PARAMETERS, GRADUATESTUDENT_TAKE_PARAMETERS) :Human(HUMAN_GIVE_PARAMETERS)
+	{
+		set_speciality(speciality);
+		set_group(group);
+		set_the_topic_of_the_diploma(the_topic_of_the_diploma);
+		set_tutor(tutor);
+		cout << "GSConstructor:\t" << this << endl;
+	}
+	~GraduateStudent()
+	{
+		cout << "GSDestructor:\t" << this << endl;
+	}
+
+	// Methods
+	void print()const
+	{
+		Human::print();
+		cout << speciality << " " << group << " " << the_topic_of_the_diploma << " " << tutor << endl;
+	}
+};
+
 void main()
 {
 	setlocale(LC_ALL, "");
@@ -181,4 +247,8 @@ void main()
 
 	Teacher teacher("White", "Walter", 50, "chemistry", 25);
 	teacher.print();
+
+	GraduateStudent GStudent("Michael", "Stepnov", 21, "Construction", "BS_43", "Multi-storey construction", "Kulikov A.V.");
+	GStudent.print();
+
 }
