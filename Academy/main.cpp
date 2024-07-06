@@ -5,6 +5,8 @@ using std::cout;
 using std::cin;
 using std::endl;
 
+#define delimiter "\n-------------------------------------\n"
+
 #define HUMAN_TAKE_PARAMETERS const std::string& last_name, const std::string& first_name, int age
 #define HUMAN_GIVE_PARAMETERS last_name, first_name, age
 
@@ -47,20 +49,26 @@ public:
 		set_age(age);
 		cout << "HConstructor:\t" << this << endl;
 	}
-	~Human()
+	virtual ~Human()
 	{
 		cout << "HDestructor:\t" << this << endl;
 	}
 
 	// Methods:
-	void print()const
+	virtual std::ostream& print(std::ostream& os)const
 	{
-		cout << last_name << " " << first_name << " " << age << endl;
+		return os << last_name << " " << first_name << " " << age << " ";
 	}
 };
 
+std::ostream& operator<<(std::ostream& os, const Human& obj)
+{
+	return obj.print(os);
+	return os;
+}
+
 #define STUDENT_TAKE_PARAMETERS const std::string& speciality, const std::string& group, double rating, double attendance
-#define STUDENT_GIVE_PARAMETERS speciality, group, rating, attendamce
+#define STUDENT_GIVE_PARAMETERS speciality, group, rating, attendance
 
 class Student : public Human 
 {
@@ -111,16 +119,23 @@ public:
 		set_attendance(attendance);
 		cout << "SConstructor:\t" << this << endl;
 	}
+	Student(const Human& human, STUDENT_TAKE_PARAMETERS) :Human(human)
+	{
+		set_speciality(speciality);
+		set_group(group);
+		set_rating(rating);
+		set_attendance(attendance);
+		cout << "SConstructor:\t" << this << endl;
+	}
 	~Student()
 	{
 		cout << "SDestructor:\t" << this << endl;
 	}
 
 	// Methods
-	void print()const
+	std::ostream& print(std::ostream& os)const override
 	{
-		Human::print();
-		cout << speciality << " " << group << " " << rating << " " << attendance << endl;
+		return Human::print(os) << speciality << " " << group << " " << rating << " " << attendance << " ";
 	}
 };
 
@@ -162,32 +177,21 @@ public:
 	}
 
 	// Methods
-	void print()const
+	std::ostream& print(std::ostream& os)const override
 	{
-		Human::print();
-		cout << speciality << " " << experience << " years" << endl;
+		return Human::print(os) << speciality << " " << experience << " years ";
 	}
 };
 
-#define GRADUATESTUDENT_TAKE_PARAMETERS const std::string& speciality, const std::string& group, const std::string& the_topic_of_the_diploma, const std::string& tutor
-#define GRADUATESTUDENT_GIVE_PARAMETERS speciality, group, the_topic_of_the_diploma, tutor
+#define GRADUATESTUDENT_TAKE_PARAMETERS const std::string& the_topic_of_the_diploma, const std::string& tutor
+#define GRADUATESTUDENT_GIVE_PARAMETERS the_topic_of_the_diploma, tutor
 
-class GraduateStudent : public Human
+class GraduateStudent : public Student
 {
-	std::string speciality;
-	std::string group;
 	std::string the_topic_of_the_diploma; //тема диплома
 	std::string tutor; //куратор диплома
 
 public:
-	const std::string& get_speciality()const
-	{
-		return speciality;
-	}
-	const std::string& get_group()const
-	{
-		return group;
-	}
 	const std::string& get_the_topic_of_the_diploma()const
 	{
 		return the_topic_of_the_diploma;
@@ -195,14 +199,6 @@ public:
 	const std::string& get_tutor()const
 	{
 		return tutor;
-	}
-	void set_speciality(const std::string& speciality)
-	{
-		this->speciality = speciality;
-	}
-	void set_group(const std::string& group)
-	{
-		this->group = group;
 	}
 	void set_the_topic_of_the_diploma(const std::string& the_topic_of_the_diploma)
 	{
@@ -214,10 +210,15 @@ public:
 	}
 	
 	//Constructors:
-	GraduateStudent(HUMAN_TAKE_PARAMETERS, GRADUATESTUDENT_TAKE_PARAMETERS) :Human(HUMAN_GIVE_PARAMETERS)
+	GraduateStudent(HUMAN_TAKE_PARAMETERS, STUDENT_TAKE_PARAMETERS, GRADUATESTUDENT_TAKE_PARAMETERS):
+		Student(HUMAN_GIVE_PARAMETERS, STUDENT_GIVE_PARAMETERS)
 	{
-		set_speciality(speciality);
-		set_group(group);
+		set_the_topic_of_the_diploma(the_topic_of_the_diploma);
+		set_tutor(tutor);
+		cout << "GSConstructor:\t" << this << endl;
+	}
+	GraduateStudent(const Student& student) :Student(student)
+	{
 		set_the_topic_of_the_diploma(the_topic_of_the_diploma);
 		set_tutor(tutor);
 		cout << "GSConstructor:\t" << this << endl;
@@ -228,27 +229,92 @@ public:
 	}
 
 	// Methods
-	void print()const
+	std::ostream& print(std::ostream& os)const override
 	{
-		Human::print();
-		cout << speciality << " " << group << " " << the_topic_of_the_diploma << " " << tutor << endl;
+		return Student::print(os) << the_topic_of_the_diploma << " " << tutor << " ";
 	}
 };
+
+//#define INHERITANCE_1
+//#define INHERITANCE_2
+
+void Print(Human* group[], const int n)
+{
+	/*for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
+	{
+		group[i]->print();
+		cout << delimiter << endl;
+	}*/
+	cout << delimiter << endl;
+	for (int i = 0; i < n; i++)
+	{
+		cout << *group[i] << endl;
+		cout << delimiter << endl;
+	}
+}
+
+void Clear(Human* group[], const int n)
+{
+
+	for (int i = 0; i < n; i++)
+	{
+		delete group[i];
+	}
+}
 
 void main()
 {
 	setlocale(LC_ALL, "");
 	cout << "HelloAcademy" << endl;
+#ifdef INHERITANCE_1 
+	cout << delimiter << endl;
+
 	Human human("Richter", "Jeffrey", 40);
 	human.print();
+
+	cout << delimiter << endl;
 
 	Student student("Pimkman", "Jessie", 20, "Chenistry", "WW_220", 95, 90);
 	student.print();
 
+	cout << delimiter << endl;
+
 	Teacher teacher("White", "Walter", 50, "chemistry", 25);
 	teacher.print();
 
-	GraduateStudent GStudent("Michael", "Stepnov", 21, "Construction", "BS_43", "Multi-storey construction", "Kulikov A.V.");
+	cout << delimiter << endl;
+
+	GraduateStudent GStudent("Michael", "Stepnov", 21, "Construction", "BS_43", 5, 98, "Multi-storey construction", "Kulikov A.V.");
 	GStudent.print();
 
+	cout << delimiter << endl;
+#endif //INHERITANCE_1
+
+#ifdef INHERITANCE_2
+	Human human("Vercetty", "Tommy", 30);
+	human.ptint();
+	cout << delimiter << endl;
+
+	Student student(humen, "Theft", "Vice", 95, 98);
+	student.ptint();
+	cout << delimiter << endl;
+
+	GraduateStudent graduate(student, "How to make money");
+	graduate.print();
+#endif //INHERITANCE_2
+	
+	
+	Human* group[] =
+	{
+	new Student("Pimkman", "Jessie", 20, "Chenistry", "WW_220", 95, 90),
+	new Teacher("White", "Walter", 50, "chemistry", 25),
+	new GraduateStudent("Michael", "Stepnov", 21, "Construction", "BS_43", 5, 98, "Multi-storey construction", "Kulikov A.V."),
+	new Student("Vercetti", "Tommy", 30, "Theft", "Vice", 95, 98),
+	new Teacher("Diaz", "Ricardo", 50, "Weapons distribution", 20)
+	};
+
+	Print(group, sizeof(group) / sizeof(group[0]));
+	Clear(group, sizeof(group) / sizeof(group[0]));
+	
+	
 }
