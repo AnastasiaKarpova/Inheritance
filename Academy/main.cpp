@@ -183,44 +183,55 @@ public:
 	}
 };
 
-#define GRADUATESTUDENT_TAKE_PARAMETERS const std::string& the_topic_of_the_diploma, const std::string& tutor
-#define GRADUATESTUDENT_GIVE_PARAMETERS the_topic_of_the_diploma, tutor
+#define GRADUATESTUDENT_TAKE_PARAMETERS const std::string& subject //const std::string& the_topic_of_the_diploma, const std::string& tutor
+#define GRADUATESTUDENT_GIVE_PARAMETERS subject //the_topic_of_the_diploma, tutor
 
 class GraduateStudent : public Student
 {
-	std::string the_topic_of_the_diploma; //тема диплома
-	std::string tutor; //куратор диплома
+	//std::string the_topic_of_the_diploma; //тема диплома
+	//std::string tutor; //куратор диплома
+	std::string subject;
 
 public:
-	const std::string& get_the_topic_of_the_diploma()const
+	/*const std::string& get_the_topic_of_the_diploma()const
 	{
 		return the_topic_of_the_diploma;
 	}
 	const std::string& get_tutor()const
 	{
 		return tutor;
+	}*/
+	const std::string& subject()const
+	{
+		return subject;
 	}
-	void set_the_topic_of_the_diploma(const std::string& the_topic_of_the_diploma)
+	/*void set_the_topic_of_the_diploma(const std::string& the_topic_of_the_diploma)
 	{
 		this->the_topic_of_the_diploma = the_topic_of_the_diploma;
 	}
 	void set_tutor(const std::string& tutor)
 	{
 		this->tutor = tutor;
+	}*/
+	void set_subject(const std::string& subject)
+	{
+		this->subject = subject;
 	}
 	
 	//Constructors:
 	GraduateStudent(HUMAN_TAKE_PARAMETERS, STUDENT_TAKE_PARAMETERS, GRADUATESTUDENT_TAKE_PARAMETERS):
 		Student(HUMAN_GIVE_PARAMETERS, STUDENT_GIVE_PARAMETERS)
 	{
-		set_the_topic_of_the_diploma(the_topic_of_the_diploma);
-		set_tutor(tutor);
+		/*set_the_topic_of_the_diploma(the_topic_of_the_diploma);
+		set_tutor(tutor);*/
+		this->subject = subject; 
 		cout << "GSConstructor:\t" << this << endl;
 	}
 	GraduateStudent(const Student& student) :Student(student)
 	{
-		set_the_topic_of_the_diploma(the_topic_of_the_diploma);
-		set_tutor(tutor);
+		/*set_the_topic_of_the_diploma(the_topic_of_the_diploma); 
+		set_tutor(tutor);*/
+		set_subject(subject);
 		cout << "GSConstructor:\t" << this << endl;
 	}
 	~GraduateStudent()
@@ -231,7 +242,7 @@ public:
 	// Methods
 	std::ostream& print(std::ostream& os)const override
 	{
-		return Student::print(os) << the_topic_of_the_diploma << " " << tutor << " ";
+		return Student::print(os) << subject /*the_topic_of_the_diploma << " " << tutor*/ << " ";
 	}
 };
 
@@ -284,7 +295,8 @@ void main()
 
 	cout << delimiter << endl;
 
-	GraduateStudent GStudent("Michael", "Stepnov", 21, "Construction", "BS_43", 5, 98, "Multi-storey construction", "Kulikov A.V.");
+	//GraduateStudent GStudent("Michael", "Stepnov", 21, "Construction", "BS_43", 5, 98, "Multi-storey construction", "Kulikov A.V.");
+	GraduateStudent GStudent("Schrader", "Hank", 40, "Chiminalistic", "OBN", 50, 70, "How to catch Heisenberg");
 	GStudent.print();
 
 	cout << delimiter << endl;
@@ -308,7 +320,8 @@ void main()
 	{
 	new Student("Pimkman", "Jessie", 20, "Chenistry", "WW_220", 95, 90),
 	new Teacher("White", "Walter", 50, "chemistry", 25),
-	new GraduateStudent("Michael", "Stepnov", 21, "Construction", "BS_43", 5, 98, "Multi-storey construction", "Kulikov A.V."),
+	//new GraduateStudent("Michael", "Stepnov", 21, "Construction", "BS_43", 5, 98, "Multi-storey construction", "Kulikov A.V."),
+	new GraduateStudent ("Schrader", "Hank", 40, "Chiminalistic", "OBN", 50, 70, "How to catch Heisenberg"),
 	new Student("Vercetti", "Tommy", 30, "Theft", "Vice", 95, 98),
 	new Teacher("Diaz", "Ricardo", 50, "Weapons distribution", 20)
 	};
