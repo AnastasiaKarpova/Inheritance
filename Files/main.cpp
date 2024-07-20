@@ -1,25 +1,27 @@
 #include <iostream>
+#include <string>
 #include <fstream>
 
 using std::cout;
 using std::cin;
 using std::endl;
 
-//#define WRITE_FRON_FILE
-#define READ_FROM_FILE
+#define WRITE_FRON_FILE
+//#define READ_FROM_FILE
 
 void main()
 {
 	setlocale(LC_ALL, "");
+
+	
 #ifdef WRITE_FRON_FILE
 	cout << "Hello Files" << endl;
-
-	std::ofstream fout;  //1)Сщздаем поток
+	
+	std::ofstream fout;  //1)Создаем поток
 	fout.open("File.txt", std::ios_base::app); //2) Открываем поток. При открытии потока,
 	//мы указыаем в какой именно файл мы будем писать.
 //std::ios_base::app (append) - дописывать в конец файла
 	fout << "Hello Files" << endl; //3)Пишем в поток
-	fout << "Привет" << endl;
 	fout.close();          //4) Закрываем поток. Потоки обязательно нужно закрывать,
 	// если не закрывать потоки, это может привести к непредвиденным последствиям.
 
@@ -39,7 +41,7 @@ void main()
 		// 3) Чтение из файла
 		while (!fin.eof())  //Пока не конец файла, читаем поток
 		{
-			const int SIZE = 1024000;
+			const int SIZE = 102400;
 			char buffer[SIZE]{};
 			//fin >> buffer;
 			fin.getline(buffer, SIZE);
