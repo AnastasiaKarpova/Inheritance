@@ -4,6 +4,7 @@
 #include "Teacher.h"
 #include "GraduateStudent.h"
 
+
 void Print(Human* group[], const int n)
 {
 	/*for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)

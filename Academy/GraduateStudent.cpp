@@ -2,10 +2,12 @@
 #include "Human.h"
 #include "Student.h"
 
+
 #define GRADUATESTUDENT_TAKE_PARAMETERS const std::string& subject //const std::string& the_topic_of_the_diploma, const std::string& tutor
 #define GRADUATESTUDENT_GIVE_PARAMETERS subject //the_topic_of_the_diploma, tutor
 
-const std::string& GraduateStudent::subject()const
+
+const std::string& GraduateStudent::get_subject() const
 {
 	return subject;
 }

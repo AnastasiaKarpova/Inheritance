@@ -1,6 +1,5 @@
 #include "Human.h"
 
-class Human;
 
 #define HUMAN_TAKE_PARAMETERS const std::string& last_name, const std::string& first_name, int age
 #define HUMAN_GIVE_PARAMETERS last_name, first_name, age

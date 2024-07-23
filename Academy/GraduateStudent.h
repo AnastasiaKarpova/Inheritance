@@ -30,7 +30,7 @@ public:
 	{
 		return tutor;
 	}*/
-	const std::string& subject()const;
+	const std::string& get_subject()const;
 	/*void set_the_topic_of_the_diploma(const std::string& the_topic_of_the_diploma)
 	{
 		this->the_topic_of_the_diploma = the_topic_of_the_diploma;
@@ -50,7 +50,7 @@ public:
 	/*void print()const
 	{
 		Student::print();
-		cout << subject;
+		cout << topic;
 	}*/
 	std::ostream& print(std::ostream& os)const override;
 	std::ofstream& print(std::ofstream& ofs)const override;
