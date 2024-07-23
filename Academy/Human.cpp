@@ -1,7 +1,6 @@
 #include "Human.h"
 
 class Human;
-std::ofstream& operator<<(std::ostream& ofs, const Human& obj);
 
 #define HUMAN_TAKE_PARAMETERS const std::string& last_name, const std::string& first_name, int age
 #define HUMAN_GIVE_PARAMETERS last_name, first_name, age
@@ -39,7 +38,7 @@ Human::Human(HUMAN_TAKE_PARAMETERS)
 	set_age(age);
 	cout << "HConstructor:\t" << this << endl;
 }
-virtual Human::~Human()
+Human::~Human()
 {
 	cout << "HDestructor:\t" << this << endl;
 }
@@ -49,14 +48,29 @@ virtual Human::~Human()
 {
 	cout << last_name << " " << first_name << " " << age;
 }*/
-virtual std::ostream& Human::print(std::ostream& os)const
+std::ostream& Human::print(std::ostream& os)const
 {
+	//os << strchr(typeid(*this).name(), ' ') + 1 << ":\t";
 	return os << last_name << " " << first_name << " " << age << " ";
 }
-
-virtual std::ifstream& read(std::)
+std::ofstream& Human::print(std::ofstream& ofs)const
 {
+	ofs.width(TYPE_WIDTH);
+	ofs << std::left;
+	ofs << std::string(strchr(typeid(*this).name(), ' ') + 1) + ":";
+	ofs.width(LAST_NAME_WIDTH);
+	ofs << last_name; 
+	ofs.width(FIRST_NAME_WIDTH);
+	ofs << first_name; 
+	ofs.width(AGE_WIDTH);
+	ofs << age;
+	return ofs;
+}
 
+std::ifstream& Human::read(std::ifstream& ifs)
+{
+	ifs >> last_name >> first_name >> age;
+	return ifs;
 }
 
 std::ostream& operator<<(std::ostream& os, const Human& obj)
@@ -64,7 +78,13 @@ std::ostream& operator<<(std::ostream& os, const Human& obj)
 	return obj.print(os);
 	return os;
 }
-std::ofstream& operator<<(std::ostream& ofs, const Human& obj)
+std::ofstream& operator<<(std::ofstream& ofs, const Human& obj)
 {
 	return obj.print(ofs);
 }
+
+std::ifstream& operator>>(std::ifstream& ifs, Human& obj)
+{
+	return obj.read(ifs);
+}
+

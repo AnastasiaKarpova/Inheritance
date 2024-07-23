@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <fstream>
 #include <string>
 #include "Human.h"
 #include "Student.h"
@@ -17,7 +18,7 @@ class GraduateStudent : public Student
 {
 	/*std::string the_topic_of_the_diploma; //тема диплома
 	std::string tutor; //куратор диплома*/
-	
+	static const int SUBJECT_WIDTH = 25;
 	std::string subject;
 
 public:
@@ -52,4 +53,7 @@ public:
 		cout << subject;
 	}*/
 	std::ostream& print(std::ostream& os)const override;
+	std::ofstream& print(std::ofstream& ofs)const override;
+	std::ifstream& read(std::ifstream& ifs)override;
 };
+

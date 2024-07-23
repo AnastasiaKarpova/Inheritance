@@ -67,14 +67,28 @@ Student::~Student()
 	Human::print();
 	cout << speciality << " " << group << " " << rating << " " << attendance;
 }*/
-std::ostream& Student::print(std::ostream& os)const override
+std::ostream& Student::print(std::ostream& os)const
 {
 	return Human::print(os) << speciality << " " << group << " " << rating << " " << attendance << " ";
 }
-std::ifstream& read(std::ifstream& ifs)override
+
+std::ofstream& Student::print(std::ofstream& ofs)const
+{
+	Human::print(ofs); 
+	ofs.width(SPECIALITY_WIDTH);
+	ofs << speciality; 
+	ofs.width(GROUP_WIDTH);
+	ofs << group; 
+	ofs.width(RATING_WIDTH);
+	ofs << rating; 
+	ofs.width(ATTENDANCE_WIDTH);
+	ofs << attendance;
+	return ofs;
+}
+
+std::ifstream& Student::read(std::ifstream& ifs)
 {
 	Human::read(ifs);
 	ifs >> speciality >> group >> rating >> attendance;
 	return ifs;
 }
-std::

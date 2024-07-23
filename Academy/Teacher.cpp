@@ -37,14 +37,30 @@ Teacher::~Teacher()
 		Human::print();
 		cout << speciality << " " << experience;
 	}*/
-std::ostream& Teacher::print(std::ostream& os)const override
+std::ostream& Teacher::print(std::ostream& os)const
 {
 	return Human::print(os) << speciality << " " << experience << " years ";
 }
-std::ifstream& read(std::ifstream& ifs)override
+
+std::ofstream& Teacher::print(std::ofstream& ofs)const
+{
+	Human::print(ofs); 
+	ofs.width(SPECIALITY_WIDTH);
+	ofs << speciality; 
+	ofs.width(EXPERIENCE_WIDTH); 
+	ofs << experience;
+	return ;
+}
+
+std::ifstream& Teacher::read(std::ifstream& ifs)
 {
 	Human::read(ifs);
-	ifs >> speciality >> ;
+	char sz_speciality[SPECIALITY_WIDTH + 1]{};
+	ifs.read(sz_speciality, SPECIALITY_WIDTH);
+	for (int i = SPECIALITY_WIDTH - 2; sz_speciality[i] != ' '; i--)sz_speciality[i] = 0;
+	while (sz_speciality[0] == ' ')for (int i = 0; sz_speciality[i]; i++)sz_speciality[i] = sz_speciality[i + 1];
+	speciality = sz_speciality; 
+	ifs >> experience;
 	return ifs;
 }
 

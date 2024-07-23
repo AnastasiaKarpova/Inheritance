@@ -40,11 +40,18 @@ GraduateStudent::~GraduateStudent()
 		Student::print();
 		cout << subject;
 	}*/
-std::ostream& GraduateStudent::print(std::ostream& os)const override
+std::ostream& GraduateStudent::print(std::ostream& os)const
 {
 	return Student::print(os) << subject; /*the_topic_of_the_diploma << " " << tutor*/
 }
-std::ifstream& read(std::ifstream& ifs) override
+std::ofstream& GraduateStudent::print(std::ofstream& ofs)const
+{
+	Student::print(ofs);
+	ofs.width(SUBJECT_WIDTH);
+	ofs << subject;
+	return ofs;
+}
+std::ifstream& GraduateStudent::read(std::ifstream& ifs) 
 {
 	Student::read(ifs);
 	std::getline(ifs, subject);

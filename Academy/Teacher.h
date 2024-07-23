@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
+#include <fstream>
 #include <string>
+#include "Human.h"
 using namespace std;
 using std::cout;
 using std::cin;
@@ -13,6 +15,8 @@ using std::endl;
 
 class Teacher :public Human
 {
+	static const int SPECIALITY_WIDTH = 25;
+	static const int EXPERIENCE_WIDTH = 5;
 	std::string speciality;
 	int experience;
 public:
@@ -32,4 +36,6 @@ public:
 		cout << speciality << " " << experience;
 	}*/
 	std::ostream& print(std::ostream& os)const override;
+	std::ofstream& print(std::ofstream& ofs)const override;
+	std::ifstream& read(std::ifstream& ifs)override;
 };
