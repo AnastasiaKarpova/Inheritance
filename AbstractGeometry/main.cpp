@@ -27,6 +27,15 @@ namespace Geometry
 		unsigned int start_y;
 		unsigned int line_width;
 		Color color;
+		static const int MIN_START_X = 100;
+		static const int MIN_START_Y = 50;
+		static const int MAX_START_X = 1000;
+		static const int MAX_START_Y = 500;
+		static const int MIN_LINE_WIDTH = 1;
+		static const int MAX_LINE_WIDTH = 32;
+		static const int MIN_SIZE = 50;
+		static const int MAX_SIZE = 500;
+		static int count;
 	public:
 		virtual double get_area()const = 0;
 		virtual double get_perimeter()const = 0;
@@ -36,10 +45,18 @@ namespace Geometry
 			set_start_x(start_x);
 			set_start_y(start_y);
 			set_line_width(line_width);
+			count++;
 		}
-		virtual ~Shape() {}
+		virtual ~Shape() 
+		{
+			count--;
+		}
 
 		//Encapsulation:
+		int get_count()const
+		{
+			return count;
+		}
 		unsigned int get_start_x()const
 		{
 			return start_x;
@@ -54,15 +71,29 @@ namespace Geometry
 		}
 		void set_start_x(unsigned int start_x)
 		{
+			if (start_x < MIN_START_X)start_x = MIN_START_X;
+			if (start_x > MAX_START_X)start_x = MAX_START_X;
 			this-> start_x = start_x;
 		}
 		void set_start_y(unsigned int start_y)
 		{
+			if (start_y < MIN_START_Y)start_y = MIN_START_Y;
+			if (start_y > MAX_START_Y)start_y = MAX_START_Y;
 			this->start_y = start_y;
 		}
 		void set_line_width(unsigned int line_width)
 		{
-			this->line_width = line_width;
+			this->line_width = 
+				line_width < MIN_LINE_WIDTH ? MIN_LINE_WIDTH : 
+				line_width > MAX_LINE_WIDTH ? MAX_LINE_WIDTH : 
+				line_width;
+		}
+		int filter_size(int size)const
+		{
+			return
+				size < MIN_SIZE ? MIN_SIZE :
+				size>MAX_SIZE ? MAX_SIZE :
+				size;
 		}
 
 		// Methods:
@@ -74,6 +105,7 @@ namespace Geometry
 			draw();
 		}
 	};
+	int Shape::count = 0;
 
 	/*class Square :public Shape
 	{
@@ -135,11 +167,11 @@ namespace Geometry
 		~Rectangle() {}
 		void set_width(double width)
 		{
-			this->width = width;
+			this->width = filter_size(width);
 		}
 		void set_height(double height)
 		{
-			this->height = height;
+			this->height = filter_size(height);
 		}
 		double get_width()const
 		{
@@ -333,7 +365,7 @@ namespace Geometry
 		}
 		void set_radius(double radius)
 		{
-			this->radius = radius;
+			this->radius = filter_size(radius);
 		} 
 		double get_radius()const
 		{
@@ -381,14 +413,14 @@ void main()
 {
 	setlocale(LC_ALL, "");
 	//Shape shape(Color::CONSOLE_RED);
-	Geometry::Square square(5, 100, 100, 5, Geometry::Color::RED);
+	Geometry::Square square(50, 100, 100, 5, Geometry::Color::RED);
 	/*cout << "Длина стороны: " << square.get_side() << endl;
 	cout << "Площадь квадрата: " << square.get_area() << endl;
 	cout << "Периметр квадрата: " << square.get_perimeter() << endl;
 	square.draw();*/
 	square.info();
 
-	Geometry::Rectangle rect(100, 50, 200, 100, 10, Geometry::Color::BLUE);
+	Geometry::Rectangle rect(500, 300, 200, 100, 1, Geometry::Color::BLUE);
 	rect.info();
 
 	cout << endl;
@@ -403,6 +435,8 @@ void main()
 
 	cout << endl;*/
 
-	Geometry::Circle disk(10000, 500, 100, 5, Geometry::Color::YELLOW);
+	Geometry::Circle disk(1000, 500, 100, 5, Geometry::Color::YELLOW);
 	disk.info();
+
+	cout << "Количество фигур: " << disk.get_count() << endl;
 }
