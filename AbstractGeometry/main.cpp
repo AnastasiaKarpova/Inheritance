@@ -14,6 +14,8 @@ namespace Geometry
 		BLUE  = 0x00FF0000,
 		YELLOW = 0x0000FFFF,
 		DARK_GREEN = 0x0000AA00,
+		DARK_BLUE = 0x00AA0000,
+		DARK_YELLOW = 0x0000AAAA,
 		CONSOLE_RED = 0XCC,  //ÑÒÀĞØÀß C - ÖÂÅÒ ÔÎÍÀ, ÌËÀÄØÀß C - ÖÂÅÒ ÒÅÊÑÒÀ
 		CONSOLE_GREEN = 0XAA,
 		CONSOLE_BLUE = 0X99,
@@ -331,10 +333,10 @@ namespace Geometry
 	//		SelectObject(hdc, hPen);
 	//		SelectObject(hdc, hBrush);
 	//		
-
+	//
 	//		DeleteObject(hBrush);
 	//		DeleteObject(hPen);
-
+	//
 	//		ReleaseDC(hwnd, hdc);
 	//	}
 	//	void info()const override
@@ -558,60 +560,52 @@ namespace Geometry
 	};
 	class RightTriangle :public Triangle //ïğÿìîóãîëüãíûé
 	{
-		double a;
-		double b;
-		double c;
+		double side_a;
+		double side_b;
+		double base;
 	public:
-		RightTriangle(double a, double b, double c, SHAPE_TAKE_PARAMETERS) :Triangle(SHAPE_GIVE_PARAMETERS)
+		RightTriangle(double side_a, double side_b, double base, SHAPE_TAKE_PARAMETERS) :Triangle(SHAPE_GIVE_PARAMETERS)
 		{
-			set_a(a);
-			set_b(b);
-			set_c(c);
+			set_side_a(side_a);
+			set_side_b(side_b);
+			set_base(base);
 		}
 		~RightTriangle() {}
-		void set_a(double a)
+		void set_side_a(double side_a)
 		{
-			this->a = a;
+			this->side_a = side_a;
 		}
-		void set_b(double b)
+		void set_side_b(double side_b)
 		{
-			this->b = b;
+			this->side_b = side_b;
 		}
-		void set_c(double c)
+		void set_base(double base)
 		{
-			this->c = c;
+			this->base = base;
 		}
-		double get_a()const
+		double get_side_a()const
 		{
-			return a;
+			return side_a;
 		}
-		double get_b()const
+		double get_side_b()const
 		{
-			return b;
+			return side_b;
 		}
-		double get_c()const
+		double get_base()const
 		{
-			return c;
-		}
-		double get_area()const override
-		{
-			return (a * b) / 2;
-		}
-		double get_perimeter()const override
-		{
-			return a + b + c;
+			return base;
 		}
 		double get_height()const override
 		{
-
+			return (side_a * side_b) / base; 
 		}
 		double get_area()const override
 		{
-
+			return (side_a * side_b) / 2;
 		}
 		double get_perimeter()const override
 		{
-			return a + b + c;
+			return side_a + side_b + base;
 		}
 		void draw()const override
 		{
@@ -626,14 +620,14 @@ namespace Geometry
 
 			POINT vertices[] =
 			{
-				{start_x, start_y + a},
-				{start_x + c, start_y + b},
-				{start_x + c / 2, start_y + b - get_height()}
+				{start_x, start_y + side_a},
+				{start_x, start_y + base - get_height()},
+				{start_x + side_b, start_y + side_a}
 			};
-
+	
 			::Polygon(hdc, vertices, 3);
 
-			DeleteObject(hBrush);
+			DeleteObject(hBrush); 
 			DeleteObject(hPen);
 
 			ReleaseDC(hwnd, hdc);
@@ -641,9 +635,9 @@ namespace Geometry
 		void info()const override
 		{
 			cout << typeid(*this).name() << endl;
-			cout << "Äëèíà ñòîğîíû 1: " << get_a() << endl;
-			cout << "Äëèíà ñòîğîíû 2: " << get_b() << endl;
-			cout << "Äëèíà ñòîğîíû 3: " << get_c() << endl;
+			cout << "Äëèíà ñòîğîíû 1: " << get_side_a() << endl;
+			cout << "Äëèíà ñòîğîíû 2: " << get_side_b() << endl;
+			cout << "Äëèíà ñòîğîíû 3: " << get_base() << endl;
 			Triangle::info();
 		}
 	};
@@ -680,17 +674,17 @@ void main()
 
 	cout << endl;
 
-	Geometry::EquilateralTriangle e_triangle(150, 300, 100, 1, Geometry::Color::GREEN);
+	Geometry::EquilateralTriangle e_triangle(150, 300, 100, 1, Geometry::Color::DARK_GREEN);
 	e_triangle.info();
 
 	cout << endl;
 
-	Geometry::IsoscelesTriangle iso_triangle(200, 100, 500, 200, 50, Geometry::Color::GREEN);
+	Geometry::IsoscelesTriangle iso_triangle(200, 100, 500, 200, 5, Geometry::Color::DARK_BLUE);
 	iso_triangle.info(); 
 
 	cout << endl;
 
-	Geometry::RightTriangle r_triangle(150, 200, 300, 300, 100, 1, Geometry::Color::GREEN);
+	Geometry::RightTriangle r_triangle(350, 200, 300, 200, 100, 1, Geometry::Color::DARK_YELLOW);
 	r_triangle.info();
 
 	cout << "Êîëè÷åñòâî ôèãóğ: " << disk.get_count() << endl;
