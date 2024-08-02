@@ -39,6 +39,10 @@ namespace Geometry
 		static const int MIN_SIZE = 50;
 		static const int MAX_SIZE = 500;
 		static int count;
+		HWND hwnd;
+		HDC hdc; 
+		HPEN hPen;
+		HBRUSH hBrush;
 	public:
 		virtual double get_area()const = 0;
 		virtual double get_perimeter()const = 0;
@@ -100,12 +104,25 @@ namespace Geometry
 		}
 
 		// Methods:
+		void draw()
+		{
+			HWND hwnd = FindWindow(NULL, L"Inheritance - Microsoft Visual Studio");
+			HDC hdc = GetDC(hwnd);
 
+			HPEN hPen = CreatePen(PS_SOLID, line_width, color);
+			HBRUSH hBrush = CreateSolidBrush(color);
+			SelectObject(hdc, hPen);
+			SelectObject(hdc, hBrush);
+
+			DeleteObject(hBrush);
+			DeleteObject(hPen);
+
+			ReleaseDC(hwnd, hdc);
+		}
 		virtual void info()const
 		{
 			cout << "Площадь фигуры: " << get_area() << endl;
 			cout << "Периметр фигуры: " << get_perimeter() << endl;
-			draw();
 		}
 	};
 	int Shape::count = 0;
@@ -454,15 +471,7 @@ namespace Geometry
 		}
 		void draw()const override
 		{
-			//HWND hwnd = GetConsoleWindow();
-			HWND hwnd = FindWindow(NULL, L"Inheritance - Microsoft Visual Studio");
-			HDC hdc = GetDC(hwnd);
-
-			HPEN hPen = CreatePen(PS_SOLID, line_width, color);
-			HBRUSH hBrush = CreateSolidBrush(color);
-			SelectObject(hdc, hPen);
-			SelectObject(hdc, hBrush);
-
+			Shape::draw();
 			POINT vertices[] =
 			{
 				{start_x, start_y + side},
@@ -471,11 +480,7 @@ namespace Geometry
 			};
 
 			::Polygon(hdc, vertices, 3);
-
-			DeleteObject(hBrush);
-			DeleteObject(hPen);
-
-			ReleaseDC(hwnd, hdc);
+						
 		}
 		void info()const override
 		{
@@ -527,15 +532,7 @@ namespace Geometry
 		}
 		void draw()const override
 		{
-			//HWND hwnd = GetConsoleWindow();
-			HWND hwnd = FindWindow(NULL, L"Inheritance - Microsoft Visual Studio");
-			HDC hdc = GetDC(hwnd);
-
-			HPEN hPen = CreatePen(PS_SOLID, line_width, color);
-			HBRUSH hBrush = CreateSolidBrush(color);
-			SelectObject(hdc, hPen);
-			SelectObject(hdc, hBrush);
-
+			Shape::draw();
 			POINT vertices[] =
 			{
 				{start_x, start_y + side},
@@ -545,10 +542,6 @@ namespace Geometry
 
 			::Polygon(hdc, vertices, 3);
 
-			DeleteObject(hBrush);
-			DeleteObject(hPen);
-
-			ReleaseDC(hwnd, hdc);
 		}
 		void info()const override
 		{
@@ -609,15 +602,7 @@ namespace Geometry
 		}
 		void draw()const override
 		{
-			//HWND hwnd = GetConsoleWindow();
-			HWND hwnd = FindWindow(NULL, L"Inheritance - Microsoft Visual Studio");
-			HDC hdc = GetDC(hwnd);
-
-			HPEN hPen = CreatePen(PS_SOLID, line_width, color);
-			HBRUSH hBrush = CreateSolidBrush(color);
-			SelectObject(hdc, hPen);
-			SelectObject(hdc, hBrush);
-
+			Shape::draw();
 			POINT vertices[] =
 			{
 				{start_x, start_y + side_a},
@@ -627,10 +612,6 @@ namespace Geometry
 	
 			::Polygon(hdc, vertices, 3);
 
-			DeleteObject(hBrush); 
-			DeleteObject(hPen);
-
-			ReleaseDC(hwnd, hdc);
 		}
 		void info()const override
 		{
